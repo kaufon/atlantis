@@ -1,0 +1,9 @@
+### Customer REST API Tests
+
+@BASE_Url = http://localhost:3333
+@CLIENT_ID = 77eb68ec-75a8-4690-b89b-a30fc68b7453
+@CONTENT_TYPE = application/json
+@DEPENTENT_ID = 35d5c4a2-5c81-4bd1-87e5-13a29dc10928
+
+### 1. Get All hostings
+GET {{BASE_Url}}/hosting HTTP/1.1

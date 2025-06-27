@@ -26,9 +26,10 @@ model Customer {
   documents     Document[]
   address       Address?
   dependents    Customer[]      @relation("CustomerDependents")
-  guardian     Customer? @relation("CustomerDependents", fields: [guardianId], references: [id], onDelete: Cascade)
+  guardian      Customer?       @relation("CustomerDependents", fields: [guardianId], references: [id], onDelete: Cascade)
   guardianId    String?
   Accommodation Accommodation[]
+  Hostings      Hostings[]
 
   @@map("customers")
 }
@@ -72,16 +73,29 @@ model Document {
 }
 
 model Accommodation {
-  id                 String   @id @default(uuid())
+  id                 String     @id @default(uuid())
   name               String
   singleBeds         Int
   coupleBeds         Int
   suites             Int
   garages            Int
   hasAirConditioning Boolean
-  createdAt          DateTime @default(now())
-  Customer           Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
-  customerId         String
+  createdAt          DateTime   @default(now())
+  Customer           Customer?  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId         String?
+  QuantityAvailable  Int        @default(0)
+  Hostings           Hostings[]
 
   @@map("accommodations")
+}
+
+model Hostings {
+  id              String         @id @default(uuid())
+  startDate       DateTime
+  endDate         DateTime
+  createdAt       DateTime       @default(now())
+  customer        Customer?      @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  customerId      String?
+  accommodation   Accommodation? @relation(fields: [accommodationId], references: [id], onDelete: NoAction)
+  accommodationId String?
 }

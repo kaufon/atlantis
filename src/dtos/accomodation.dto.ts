@@ -7,4 +7,5 @@ export type AccommodationDto = {
 	garages: number;
 	hasAirConditioning: boolean;
 	customerId?: string;
+  quantityAvailable: number
 };

@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { DocumentType } from "@prisma/client";
+import { randomUUID } from "crypto";
 import { PrismaService } from "src/database/prisma.service";
 import { CellphoneDto } from "src/dtos/cellphone.dto";
 import { CustomerDto } from "src/dtos/customer.dto";
@@ -54,6 +55,29 @@ export class CustomerService {
 
 		return customer ? this.mapToDto(customer) : null;
 	}
+	async findDependentById(id: string): Promise<CustomerDto | null> {
+		const customer = await this.prismaService.customer.findUnique({
+			where: { id, guardianId: { not: null } },
+			include: {
+				address: true,
+				cellphones: true,
+				documents: true,
+				dependents: {
+					orderBy: {
+						createdAt: "asc",
+					},
+					include: {
+						address: true,
+						cellphones: true,
+						documents: true,
+					},
+				},
+			},
+		});
+
+		return customer ? this.mapToDto(customer) : null;
+	}
+
 	async hasDocument(document: DocumentDto): Promise<boolean> {
 		const documentExists = await this.prismaService.document.findFirst({
 			where: { number: document.number, type: document.type as DocumentType },
@@ -146,48 +170,53 @@ export class CustomerService {
 		const customerDto = await this.findById(customerId);
 		if (!customerDto) return;
 
+		const guardian = await this.prismaService.customer.findUnique({
+			where: { id: customerId, guardianId: null },
+		});
+		if (!guardian) {
+			throw new Error("Guardian not found");
+		}
+
 		const dependent = {
 			...dependentDto,
 			address: customerDto.address,
 			cellphones: customerDto.cellphones.map((cellphone) => cellphone),
 		};
 
-		await this.prismaService.customer.update({
-			where: { id: customerId },
+		await this.prismaService.customer.create({
 			data: {
-				dependents: {
-					create: {
-						id: dependent.id,
-						name: dependent.name,
-						socialName: dependent.socialName,
-						birthDate: dependent.birthDate,
-						registrationDate: dependent.registrationDate,
-						address: dependent.address
-							? {
-									create: {
-										street: dependent.address.street,
-										neighborhood: dependent.address.neighborhood,
-										city: dependent.address.city,
-										state: dependent.address.state,
-										country: dependent.address.country,
-										zipcode: dependent.address.zipcode,
-									},
-								}
-							: undefined,
-						cellphones: {
-							create: dependent.cellphones.map((cellphone) => ({
-								ddd: cellphone.ddd,
-								number: cellphone.number,
-							})),
-						},
-						documents: {
-							create: dependent.documents.map((document) => ({
-								number: document.number,
-								type: document.type as DocumentType,
-								expeditionDate: document.expeditionDate,
-							})),
-						},
-					},
+				guardian: {
+					connect: { id: customerId },
+				},
+				id: dependent.id ?? randomUUID(),
+				name: dependent.name,
+				socialName: dependent.socialName,
+				birthDate: dependent.birthDate,
+				registrationDate: dependent.registrationDate,
+				address: dependent.address
+					? {
+							create: {
+								street: dependent.address.street,
+								neighborhood: dependent.address.neighborhood,
+								city: dependent.address.city,
+								state: dependent.address.state,
+								country: dependent.address.country,
+								zipcode: dependent.address.zipcode,
+							},
+						}
+					: undefined,
+				cellphones: {
+					create: dependent.cellphones.map((cellphone) => ({
+						ddd: cellphone.ddd,
+						number: cellphone.number,
+					})),
+				},
+				documents: {
+					create: dependent.documents.map((document) => ({
+						number: document.number,
+						type: document.type as DocumentType,
+						expeditionDate: document.expeditionDate,
+					})),
 				},
 			},
 		});
@@ -249,13 +278,17 @@ export class CustomerService {
 		dependentDto: CustomerDto,
 	): Promise<void> {
 		const customerDto = await this.findById(customerId);
-		if (!customerDto) return;
+		if (!customerDto) {
+			console.error("Customer not found:", customerId);
+			throw new Error("Customer not found");
+		}
 
 		const dependent = {
 			...dependentDto,
 			address: customerDto.address,
 			cellphones: customerDto.cellphones.map((cellphone) => cellphone),
 		};
+		console.log("Updating dependent:", dependent);
 
 		await this.prismaService.customer.update({
 			where: {

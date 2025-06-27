@@ -3,6 +3,7 @@ import {
 	Controller,
 	Delete,
 	Get,
+	Logger,
 	Param,
 	Post,
 	Put,
@@ -40,10 +41,12 @@ export class CustomerController {
 	) {
 		const dependentData: CustomerDto = body;
 		dependentData.id = dependentId;
-		const dependentDto = await this.customerService.findById(dependentId);
+		const dependentDto = await this.customerService.findDependentById(dependentId);
 		if (!dependentDto) {
+      Logger.debug(`Dependent with id ${dependentId} not found for customer ${id}`);
 			return;
 		}
+    Logger.debug(`Updating dependent with id ${dependentId} for customer ${id}`);
 		await this.customerService.updateDependent(id, dependentData);
 	}
 	@Put("/:id")
@@ -55,4 +58,8 @@ export class CustomerController {
 	async deleteCustomer(@Param("id") id: string) {
 		await this.customerService.remove(id);
 	}
+  @Delete(":id/dependents/:dependentId")
+  async deleteDependent(@Param("id") id: string, @Param("dependentId") dependentId: string) {
+    await this.customerService.removeDependent(id, dependentId);
+  }
 }
