@@ -1,1 +1,8 @@
-
+{
+  "scripts": {
+    "start:all": "concurrently \"npm start --prefix server\" \"npm run dev --prefix web\""
+  },
+  "dependencies": {
+    "concurrently": "^9.2.0"
+  }
+}
