@@ -5,10 +5,9 @@ CREATE TABLE "customers" (
     "socialName" TEXT NOT NULL,
     "birthDate" DATETIME NOT NULL,
     "registrationDate" DATETIME NOT NULL,
-    "isHosted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "parentId" TEXT,
-    CONSTRAINT "customers_parentId_fkey" FOREIGN KEY ("parentId") REFERENCES "customers" ("id") ON DELETE SET NULL ON UPDATE CASCADE
+    "guardianId" TEXT,
+    CONSTRAINT "customers_guardianId_fkey" FOREIGN KEY ("guardianId") REFERENCES "customers" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -52,17 +51,22 @@ CREATE TABLE "accommodations" (
     "suites" INTEGER NOT NULL,
     "garages" INTEGER NOT NULL,
     "hasAirConditioning" BOOLEAN NOT NULL,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "customerId" TEXT,
+    "QuantityAvailable" INTEGER NOT NULL DEFAULT 0,
+    CONSTRAINT "accommodations_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "customers" ("id") ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 -- CreateTable
-CREATE TABLE "hostings" (
+CREATE TABLE "Hosting" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "accommodationId" TEXT NOT NULL,
-    "hostId" TEXT NOT NULL,
+    "startDate" DATETIME NOT NULL,
+    "endDate" DATETIME NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "hostings_accommodationId_fkey" FOREIGN KEY ("accommodationId") REFERENCES "accommodations" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "hostings_hostId_fkey" FOREIGN KEY ("hostId") REFERENCES "customers" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "customerId" TEXT,
+    "accommodationId" TEXT,
+    CONSTRAINT "Hosting_customerId_fkey" FOREIGN KEY ("customerId") REFERENCES "customers" ("id") ON DELETE CASCADE ON UPDATE CASCADE,
+    CONSTRAINT "Hosting_accommodationId_fkey" FOREIGN KEY ("accommodationId") REFERENCES "accommodations" ("id") ON DELETE NO ACTION ON UPDATE CASCADE
 );
 
 -- CreateIndex

@@ -8,7 +8,6 @@ export const SuperFamilyAccommodationMock: AccommodationDto = {
 	suites: 3,
 	garages: 2,
 	hasAirConditioning: true,
-	customerId: undefined,
   quantityAvailable: 0
 };
 export const SimpleSingleAccommodationMock: AccommodationDto = {
@@ -19,7 +18,6 @@ export const SimpleSingleAccommodationMock: AccommodationDto = {
   suites: 1,
   garages: 0,
   hasAirConditioning: true,
-  customerId: undefined,
   quantityAvailable: 0
 
 }
@@ -31,7 +29,6 @@ export const PlusSingleAccommodationMock: AccommodationDto = {
   suites: 1,
   garages: 1,
   hasAirConditioning: true,
-  customerId: undefined,
   quantityAvailable: 0
 
 }
@@ -43,7 +40,6 @@ export const SimpleCoupleAccommodationMock: AccommodationDto = {
   suites: 1,
   garages: 1,
   hasAirConditioning: true,
-  customerId: undefined,
   quantityAvailable: 0
 
 }
@@ -55,7 +51,6 @@ export const PlusFamilyAccommodationMock: AccommodationDto = {
   suites: 2,
   garages: 2,
   hasAirConditioning: true,
-  customerId: undefined,
   quantityAvailable: 0
 
 }
@@ -67,6 +62,5 @@ export const SimpleFamilyAccommodationMock: AccommodationDto = {
   suites: 1,
   garages: 1,
   hasAirConditioning: true,
-  customerId: undefined,
   quantityAvailable: 0
 }

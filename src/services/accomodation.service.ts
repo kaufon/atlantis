@@ -55,9 +55,6 @@ export class AccommodationService {
 	}
 
 	async update(accommodation: AccommodationDto): Promise<void> {
-		if (!accommodation.customerId) {
-			throw new Error("Customer ID is required for updates.");
-		}
 		await this.prismaService.accommodation.update({
 			where: { id: accommodation.id },
 			data: {
@@ -129,7 +126,6 @@ export class AccommodationService {
 			suites: accommodation.suites,
 			garages: accommodation.garages,
 			hasAirConditioning: accommodation.hasAirConditioning,
-			customerId: accommodation.customerId,
 			quantityAvailable: accommodation.QuantityAvailable,
 		};
 	}

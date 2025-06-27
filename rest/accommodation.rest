@@ -12,21 +12,21 @@ Content-Type: {{CONTENT_TYPE}}
 
 
 ### 2. Get Accommodation by ID 
-GET {{BASE_Url}}/accommodation/2
+GET {{BASE_Url}}/accommodation/1
 Content-Type: {{CONTENT_TYPE}}
 
 ### 3. Add quantity 
-PATCH {{BASE_Url}}/accommodation/2/add-quantity
+PATCH {{BASE_Url}}/accommodation/1/add-quantity
 Content-Type: {{CONTENT_TYPE}}
 
 {
-  "quantity": 5
+  "quantity": 100
 }
 ### 4. Remove quantity 
-PATCH {{BASE_Url}}/accommodation/2/remove-quantity
+PATCH {{BASE_Url}}/accommodation/1/remove-quantity
 Content-Type: {{CONTENT_TYPE}}
 
 {
-  "quantity": 1
+  "quantity": 100
 }
 
