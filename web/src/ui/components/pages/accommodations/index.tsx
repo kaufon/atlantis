@@ -27,10 +27,10 @@ export const AccommodationsPage = () => {
           </div>
         </div>
         <Tabs variant="underlined">
-          <Tab key="accommodations" title="Alojamentos">
+          <Tab key="accommodations" title="Hospedagens">
             <AccomodationsTable />
           </Tab>
-          <Tab key="accommodations-types" title="Tipos de alojamento">
+          <Tab key="accommodations-types" title="Alojamentos">
             <TypesOfAccommodationsTable />
           </Tab>
         </Tabs>
