@@ -41,7 +41,7 @@ export const AccommodationsPage = () => {
             <>
               <DrawerHeader>Hospedando cliente</DrawerHeader>
               <DrawerBody>
-                <RentAccommodationForm onCancel={onClose} />
+                <RentAccommodationForm onCancel={onClose}/>
               </DrawerBody>
             </>
           )}
