@@ -248,7 +248,7 @@ export const RegisterUserForm = ({ onCancel }: RegisterUserFormProps) => {
 									return response.json();
 								})
 								.then((data) => {
-                  redirect("/")
+                  window.location.reload()
 								})
 								.catch((error) => {
 									console.error(error);

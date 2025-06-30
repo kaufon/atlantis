@@ -106,6 +106,9 @@ export const TypesOfAccommodationsTable = () => {
 					<TableColumn>NOME</TableColumn>
 					<TableColumn>CAMAS DE SOLTEIRO</TableColumn>
 					<TableColumn>CAMAS DE CASAL</TableColumn>
+					<TableColumn>SUÍTES</TableColumn>
+					<TableColumn>AR CONDICIONADO</TableColumn>
+					<TableColumn>GARAGENS</TableColumn>
 					<TableColumn>QTD. DISPONÍVEL</TableColumn>
 					<TableColumn className="text-center">AÇÕES</TableColumn>
 				</TableHeader>
@@ -120,7 +123,11 @@ export const TypesOfAccommodationsTable = () => {
 							<TableCell>{room.name}</TableCell>
 							<TableCell>{room.singleBeds}</TableCell>
 							<TableCell>{room.coupleBeds}</TableCell>
+							<TableCell>{room.suites}</TableCell>
+							<TableCell>{room.hasAirConditioning ? "SIM" : "NAO"}</TableCell>
+							<TableCell>{room.garages}</TableCell>
 							<TableCell>{room.quantityAvailable}</TableCell>
+
 							<TableCell>
 								{/* --- MODIFICADO: Div agora contém os dois botões --- */}
 								<div className="flex items-center justify-center gap-2">
